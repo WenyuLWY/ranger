@@ -26,13 +26,13 @@ RUN cd /root && git clone https://github.com/abseil/abseil-cpp.git && cd abseil-
 # ros workspace
 RUN mkdir -p /root/catkin_ws/src && \
     cd /root/catkin_ws && \
-    bash -c "source /opt/ros/noetic/setup.bash && catkin_make" && \
+    bash -c "source /opt/ros/noetic/setup.bash && catkin build" && \
     echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
 
 RUN echo "#!/bin/bash" > /root/start.sh && \
     echo "cd /root/catkin_ws" >> /root/start.sh && \
     echo "source /opt/ros/noetic/setup.bash" >> /root/start.sh && \
-    echo "catkin_make -j" >> /root/start.sh && \ 
+    # echo "catkin_make -j" >> /root/start.sh && \ 
     echo "source ~/catkin_ws/devel/setup.bash" >> /root/start.sh && \
     echo "exec \"\$@\"" >> /root/start.sh && \
     chmod +x /root/start.sh

@@ -17,9 +17,9 @@ for path in "$PKG_ROOT_DIR"/*; do
         MOUNT_ARGS="$MOUNT_ARGS -v $path:/root/catkin_ws/src/$name"
     fi
 done
-MOUNT_ARGS="$MOUNT_ARGS -v $PKG_ROOT_DIR/tmp/build:/root/catkin_ws/build"
-MOUNT_ARGS="$MOUNT_ARGS -v $PKG_ROOT_DIR/tmp/devel:/root/catkin_ws/devel"
-MOUNT_ARGS="$MOUNT_ARGS -v $PKG_ROOT_DIR/tmp/logs:/root/catkin_ws/logs"
+# MOUNT_ARGS="$MOUNT_ARGS -v $PKG_ROOT_DIR/tmp/build:/root/catkin_ws/build"
+# MOUNT_ARGS="$MOUNT_ARGS -v $PKG_ROOT_DIR/tmp/devel:/root/catkin_ws/devel"
+# MOUNT_ARGS="$MOUNT_ARGS -v $PKG_ROOT_DIR/tmp/logs:/root/catkin_ws/logs"
 
 # -v ~/models:/root/.gazebo/models \
 
