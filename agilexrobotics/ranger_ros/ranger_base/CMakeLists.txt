@@ -137,6 +137,7 @@ target_include_directories(ranger_ascent INTERFACE
 	$<INSTALL_INTERFACE:include>)
 
 add_library(ranger_messenger STATIC src/ranger_messenger.cpp)
+target_compile_definitions(ranger_messenger PUBLIC ASIO_ENABLE_OLD_SERVICES)
 target_link_libraries(ranger_messenger ${catkin_LIBRARIES} ranger_ascent)
 add_dependencies(ranger_messenger ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 

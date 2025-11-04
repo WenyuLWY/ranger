@@ -32,7 +32,7 @@ RUN mkdir -p /root/catkin_ws/src && \
 RUN echo "#!/bin/bash" > /root/start.sh && \
     echo "cd /root/catkin_ws" >> /root/start.sh && \
     echo "source /opt/ros/noetic/setup.bash" >> /root/start.sh && \
-    # echo "catkin_make -j" >> /root/start.sh && \ 
+    echo "catkin build" >> /root/start.sh && \ 
     echo "source ~/catkin_ws/devel/setup.bash" >> /root/start.sh && \
     echo "exec \"\$@\"" >> /root/start.sh && \
     chmod +x /root/start.sh

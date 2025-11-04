@@ -21,7 +21,7 @@ done
 # MOUNT_ARGS="$MOUNT_ARGS -v $PKG_ROOT_DIR/tmp/devel:/root/catkin_ws/devel"
 # MOUNT_ARGS="$MOUNT_ARGS -v $PKG_ROOT_DIR/tmp/logs:/root/catkin_ws/logs"
 
-# -v ~/models:/root/.gazebo/models \
+# 
 
 docker run -it --name $CONTAINER_NAME \
         --gpus all --device=/dev/dxg \
@@ -33,5 +33,6 @@ docker run -it --name $CONTAINER_NAME \
         -v /mnt/wslg:/mnt/wslg \
         -v /tmp/.X11-unix:/tmp/.X11-unix \
         -v /usr/lib/wsl:/usr/lib/wsl \
+        -v ~/models:/root/.gazebo/models \
         $MOUNT_ARGS \
         $IMAGE_NAME bash
