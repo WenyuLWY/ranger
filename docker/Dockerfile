@@ -12,6 +12,8 @@ RUN apt install -y python3-rosdep python3-rosinstall python3-rosinstall-generato
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc   
 RUN echo "export DISABLE_ROS1_EOL_WARNINGS=1" >> ~/.bashrc   
 
+# agilex ranger
+RUN apt install -y libasio-dev libboost-all-dev ros-noetic-teleop-twist-keyboard
 
 
 # ros workspace
