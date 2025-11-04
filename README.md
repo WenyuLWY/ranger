@@ -1,4 +1,9 @@
 # ranger
+## test on real robot
+
+roslaunch sick_scan_xd sick_multiscan.launch 
+
+## debug
 hello
 
 git clone --depth=1 https://github.com/agilexrobotics/ugv_sdk.git 
