@@ -1,3 +1,6 @@
+# 下载子模块
+git submodule update --init --recursive
+
 # 开机执行
 #sudo modprobe gs_usb
 #sudo ip link set can0 up type can bitrate 500000
