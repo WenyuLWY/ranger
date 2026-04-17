@@ -1,0 +1,10 @@
+[submodule "cartographer"]
+	path = cartographer
+	url = https://github.com/cartographer-project/cartographer.git
+[submodule "cartographer_ros"]
+	path = cartographer_ros
+	url = https://github.com/cartographer-project/cartographer_ros.git
+[submodule "autonomous_exploration_development_environment"]
+	path = autonomous_exploration_development_environment
+	url = https://github.com/WenyuLWY/autonomous_exploration_development_environment.git
+	branch = ranger
