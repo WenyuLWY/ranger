@@ -1,22 +1,36 @@
-sudo modprobe gs_usb
+# 开机执行
+#sudo modprobe gs_usb
+#sudo ip link set can0 up type can bitrate 500000
 
-# bring up can interface
-sudo ip link set can0 up type can bitrate 500000
+sudo nano /etc/systemd/system/can0.service
 
-# install can utils
-#sudo apt install -y can-utils
+    [Unit]
+    Description=Bring up CAN interface can0
+    After=network.target
 
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/modprobe gs_usb
+    ExecStart=/sbin/ip link set can0 up type can bitrate 500000
+    RemainAfterExit=yes
+
+    [Install]
+    WantedBy=multi-user.target
+
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+sudo systemctl enable can0
+
+
+# 雷达设置
 ip addr
 雷达网段 和 工控机网段
 
-<arg name="hostname" default="192.168.0.1"/>  <!-- IP address of sensor -->
-<arg name="udp_receiver_ip" default="192.168.0.100"/>  <!-- UDP destination IP address (ip address of udp receiver) -->
+<arg name="hostname" default="192.168.0.1"/>  
+<arg name="udp_receiver_ip" default="192.168.0.100"/>  
 
 
-# step:
-#1. 设置CAN通信
-sudo modprobe gs_usb
-sudo ip link set can0 up type can bitrate 500000
 
-#2. 启动底盘
+
+# 1.启动底盘
 roslaunch ranger_bringup ranger.launch 
