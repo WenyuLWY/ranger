@@ -1,3 +1,0 @@
-# 
-# branch 是ranger
-https://github.com/WenyuLWY/autonomous_exploration_development_environment.git  -b ranger
