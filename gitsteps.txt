@@ -1,11 +1,17 @@
-
-
+#init submit
 git submodule add https://github.com/cartographer-project/cartographer.git cartographer
 git submodule add https://github.com/cartographer-project/cartographer_ros.git cartographer_ros
 git submodule add -b ranger https://github.com/WenyuLWY/autonomous_exploration_development_environment.git autonomous_exploration_development_environment
 git add .gitmodules cartographer cartographer_ros autonomous_exploration_development_environment
 git commit -m "add submodules"
 
-
+#download
 git clone --recurse-submodules https://github.com/WenyuLWY/ranger.git
+#if download without submodules 
 git submodule update --init --recursive
+
+#update
+git submodule update --remote
+git add cartographer cartographer_ros autonomous_exploration_development_environment
+git commit -m "update submodules"
+git push

@@ -93,11 +93,10 @@ RUN mkdir -p catkin_ws/src && \
 RUN echo "#!/bin/bash" > /root/start.sh && \
     echo "cd /root/catkin_ws" >> /root/start.sh && \
     echo "source /opt/ros/noetic/setup.bash" >> /root/start.sh && \
-    # echo "source ~/dependencies_catkin_ws/devel/setup.bash" >> /root/start.sh && \
-    # echo "catkin config --extend /root/dependencies_catkin_ws/devel" >> /root/start.sh && \
-    # echo "catkin config --cmake-args -DCMAKE_BUILD_TYPE=Debug" >> /root/start.sh && \
-    echo "catkin build" >> /root/start.sh && \ 
-    # echo "catkin config --buildlist msp" >> /root/start.sh && \
+    echo "source ~/dependencies_catkin_ws/devel/setup.bash" >> /root/start.sh && \
+    echo "CORES=\$(nproc)" >> /root/start.sh && \
+    echo "JOBS=\$((CORES>1 ? CORES-1 : 1))" >> /root/start.sh && \
+    echo "catkin build -j\$JOBS" >> /root/start.sh && \
     echo "source ~/catkin_ws/devel/setup.bash" >> /root/start.sh && \
     echo "exec \"\$@\"" >> /root/start.sh && \
     chmod +x /root/start.sh
