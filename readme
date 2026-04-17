@@ -1,27 +1,22 @@
-before cartographer
-sudo apt-get install python-is-python3
-sudo apt install libceres-dev
-sudo apt-get install liblua5.2-dev
-sudo apt install libgmock-dev
+sudo modprobe gs_usb
 
-sudo apt-get install -y python3-wstool python3-rosdep ninja-build stow
-catkin_make_isolated --pkg cartographer cartographer_ros cartographer_ros_msgs cartographer_rviz --install --use-ninja
+# bring up can interface
+sudo ip link set can0 up type can bitrate 500000
 
-before multiscan
-catkin_make_isolated --pkg libsick_ldmrs sick_scan_xd --install --cmake-args -DROS_VERSION=1 -Wno-dev
+# install can utils
+#sudo apt install -y can-utils
 
-before agilex
-sudo apt install libasio-dev libboost-all-dev
-sudo apt install -y ros-$ROS_DISTRO-teleop-twist-keyboard
+ip addr
+雷达网段 和 工控机网段
 
-before movebase
-sudo apt-get install libsdl1.2-dev
-sudo apt-get install libsdl-image1.2-dev
-sudo apt-get install ros-noetic-tf2-sensor-msgs
-sudo apt-get install ros-noetic-sensor-filters
-sudo apt-get install ros-noetic-libg2o
-sudo apt-get install ros-noetic-mbf-msgs
-sudo apt-get install ros-noetic-mbf-costmap-core
-sudo apt-get install ros-noetic-costmap-converter
+<arg name="hostname" default="192.168.0.1"/>  <!-- IP address of sensor -->
+<arg name="udp_receiver_ip" default="192.168.0.100"/>  <!-- UDP destination IP address (ip address of udp receiver) -->
 
-catkin_make -DCATKIN_BLACKLIST_PACKAGES="cartographer;cartographer_ros;cartographer_rviz;cartographer_ros_msgs;libsick_ldmrs;sick_scan_xd"
+
+# step:
+#1. 设置CAN通信
+sudo modprobe gs_usb
+sudo ip link set can0 up type can bitrate 500000
+
+#2. 启动底盘
+roslaunch ranger_bringup ranger.launch 
