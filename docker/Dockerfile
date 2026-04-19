@@ -85,6 +85,13 @@ RUN apt-get update && apt-get install -y libomp-dev libpcl-dev libeigen3-dev
 #speed
 RUN apt-get update && apt-get install -y ros-noetic-interactive-marker-twist-server ros-noetic-twist-mux 
 
+#husky
+RUN apt-get update && apt-get install -y ros-noetic-husky-simulator
+
+RUN apt-get update && apt-get install -y ros-noetic-ur-description
+
+RUN apt-get update && apt-get install -y ros-noetic-sensor-filters
+
 RUN mkdir -p catkin_ws/src && \
     cd catkin_ws && \
     bash -c "source /opt/ros/noetic/setup.bash && catkin build" && \

@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!-- -->
+<launch>
+    <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" output="screen"/>
+    <param name="/use_sim_time"             value="true" />
+    <arg name="gazebo_gui"                  default="true"/>
+    <!-- <arg name="world_name"                  default="$(find husky_gazebo)/worlds/clearpath_playpen.world"/> -->
+    <!-- <arg name="world_name"                       default="$(find gazebo_ros)/worlds/empty.world"/>  -->
+    <!-- <arg name="world_name"                  default="$(find nav)/world/simple_room.world"/>、 -->
+    <!-- <arg name="world_name"                  default="$(find nav)/world/room_with_corner.world"/> -->
+    <!-- <arg name="world_name"                  default="$(find nav)/world/room.world"/> -->
+    <arg name="world_name" default="$(find cpr_office_gazebo)/worlds/actually_empty_world.world" />
+
+    <arg name="odom_frame_id"               default="odom"/> 
+    <arg name="lidar_frame_id"              default="velodyne"/>
+    <arg name="robot_base_frame_id"         default="dummy_base_link"/>
+    <arg name="raw_cloud_topic"             default="/velodyne_points/filtered"/> 
+    <arg name="odometry_topic"              default="/Odometry"/>
+    <arg name="mode"                        default="2d"/>
+    <arg name="source_frame_id"             default="dummy_base_link"/>
+
+
+    <include file="$(find nav)/launch/sim/spawn_ranger.launch">
+    </include>
+
+    <node pkg="sensor_filters" type="pointcloud2_filter_chain" output="screen" name="pointcloud2_filters">
+        <remap from="~input" to="/velodyne_points" />
+        <remap from="~output" to="/velodyne_points/filtered" />
+        <rosparam command="load" file="$(find nav)/config/ranger/pointcloud_filter.yaml" />
+    </node>
+
+  <include file="$(find nav)/launch/planning2d.launch">
+    <arg name="cmd_vel" value="/four_wheel_steering_controller/cmd_vel"/> 
+    <arg name="raw_cloud_topic" value="$(arg raw_cloud_topic)"/>
+  </include>
+
+  <node pkg="nodelet" type="nodelet" name="LocalizationSimNodelet" args="load msp/LocalizationSimNodelet nodelet_manager" output="screen">
+    <param name="laserCloudTopic" value="$(arg raw_cloud_topic)"/>
+    <param name="robotName" value="ranger"/>
+  </node>
+
+
+  <node pkg="nodelet" type="nodelet" name="SensorInputNodelet" args="load msp/SensorInputNodelet nodelet_manager" output="screen">
+    <param name="lidar_frame_id"          value="$(arg lidar_frame_id)"/>
+    <param name="robot_base_frame_id"     value="$(arg robot_base_frame_id)"/>
+    <param name="odom_frame_id"           value="$(arg odom_frame_id)"/>
+    <param name="sub_odometry_topic"          value="$(arg odometry_topic)"/>
+    <param name="raw_cloud_topic"         value="$(arg raw_cloud_topic)"/>
+    <param name="mode"                    value="$(arg mode)"/>
+    <param name="source_frame_id"         value="$(arg source_frame_id)"/>
+  </node>
+
+  <include file="$(find nav)/launch/mapping_rtabmap.launch">
+    <arg name="scan_topic"             value="$(arg raw_cloud_topic)"/>
+    <arg name="odometry_topic"         value="/odom"/>
+    <arg name="odom_frame_id"          value="$(arg odom_frame_id)"/>
+    <arg name="frame_id"               value="$(arg robot_base_frame_id)"/>
+    <arg name="rtabmap_viz"           default="false"/>
+    <arg name="use_imu"               default="true"/> 
+    <arg name="imu_topic"             default="/imu/data"/>
+    <arg name="use_sim_time"          default="true"/>
+    <arg name="ground_is_obstacle"    default="false"/>
+  </include>
+
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch" >
+        <arg name="paused"            default="false"/>
+        <arg name="use_sim_time"      default="true"/>
+        <arg name="gui"               value="$(arg gazebo_gui)"/>
+        <arg name="headless"          default="false"/>
+        <arg name="debug"             default="false"/>
+        <arg name="verbose"           default="false"/>
+        <arg name="world_name"        default="$(arg world_name)"/>
+    </include>
+
+   <node pkg="rviz" type="rviz" name="rviz_run" args="-d $(find nav)/rviz/ranger.rviz" /> 
+
+</launch>

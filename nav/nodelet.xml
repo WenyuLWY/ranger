@@ -1,0 +1,10 @@
+<library path="lib/libmsp_nodelets">
+
+    <class name="msp/LocalizationSimNodelet" type="msp::LocalizationSimNodelet" base_class_type="nodelet::Nodelet">
+        <description>LocalizationSimNodelet</description>
+    </class>
+    
+    <class name="msp/SensorInputNodelet" type="msp::SensorInputNodelet" base_class_type="nodelet::Nodelet">
+        <description>SensorInputNodelet</description>
+    </class>
+</library>

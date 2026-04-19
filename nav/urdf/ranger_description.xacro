@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot name="ranger_description" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:property name="baseToTop" value="0.145" />
+
+
+  <link name="dummy_base_link"/>  
+  <joint name="dummy_joint" type="fixed">  
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <parent link="dummy_base_link"/>  
+      <child link="base_link"/>  
+  </joint>
+
+
+
+  <link name="base_footprint"/>
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_footprint"/>
+    <origin xyz="0 0 -0.409" rpy="0 0 0"/>
+  </joint>
+
+
+  <xacro:include filename="$(find nav)/urdf/ranger_platform.xacro"/>
+  <xacro:ranger_platform />
+
+  <xacro:include filename="$(find nav)/urdf/ranger_ur.xacro"/>
+  <xacro:ranger_ur parent="base_link" prefix="ur5e" mount_length="0.2" mount_radius="0.08" position="0.35" baseToTop="0.145" />
+
+  <xacro:include filename="$(find nav)/urdf/ranger_lidar.xacro"/>
+  <xacro:ranger_lidar />
+  <xacro:include filename="$(find nav)/urdf/ranger_imu.xacro"/>
+  <xacro:ranger_imu />
+
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    </plugin>
+  </gazebo>
+
+</robot>

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro" />
+
+  <xacro:macro name="ranger_lidar">
+      
+  <xacro:property name="top_plate_height" value="0.2" />
+  <xacro:property name="top_plate_size_x" value="0.13" />
+  <xacro:property name="top_plate_size_y" value="0.13" />
+
+  <link name="top_plate_link">
+    <visual>
+      <origin xyz="0 0 ${-top_plate_height/2.0}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${top_plate_size_x} ${top_plate_size_y} ${top_plate_height}"/>
+      </geometry>
+      <material name="black">
+        <color rgba="0.2 0.2 0.2 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 ${-top_plate_height/2.0}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${top_plate_size_x} ${top_plate_size_y} ${top_plate_height}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 ${-top_plate_height/2.0}" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.01" ixy="0" ixz="0"
+              iyy="0.01" iyz="0"
+              izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="base_to_plate" type="fixed">
+    <parent link="base_link"/>
+    <child link="top_plate_link"/>
+    <origin xyz="0.55 0 ${top_plate_height+0.145}" rpy="0 0 0"/>
+  </joint>
+
+  <xacro:VLP-16 parent="top_plate_link" topic="velodyne_points" name="velodyne" hz="10" gpu="1">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:VLP-16>
+
+  </xacro:macro>
+</robot>

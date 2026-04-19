@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find ur_description)/urdf/inc/ur5e_macro.xacro"/>
+
+  <xacro:macro name="ranger_ur" params="
+      parent
+      prefix:=ur5e
+      mount_length:=0.2
+      mount_radius:=0.08
+      position:='0'
+      baseToTop:='0'">
+    
+
+  <link name="${prefix}_mount_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${mount_radius}" length="${mount_length}"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.3 0.3 0.3 1.0"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${mount_radius}" length="${mount_length}"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="2.0"/>
+      <inertia ixx="0.01" iyy="0.01" izz="0.01"
+                ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="${prefix}_mount_to_base" type="fixed">
+    <parent link="${parent}"/>
+    <child link="${prefix}_mount_link"/>
+    <origin xyz="${position} 0 ${mount_length/2.0+baseToTop}" rpy="0 0 0"/>
+  </joint>
+
+  <xacro:ur5e_robot prefix="${prefix}_" />
+
+  <joint name="${prefix}_base_to_mount" type="fixed">
+    <parent link="${prefix}_mount_link"/>
+    <child link="${prefix}_base_link"/>
+    <origin xyz="0 0 ${mount_length/2.0}" rpy="0 0 0"/>
+  </joint>
+
+  </xacro:macro>
+</robot>

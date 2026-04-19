@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!-- -->
+<launch>
+
+  <arg name="model" default="$(find nav)/urdf/ranger_description.xacro"/>
+  <arg name="world" default="$(find cpr_office_gazebo)/urdf/office_construction_geometry.urdf.xacro"/>
+
+  <param name="robot_description" command="$(find xacro)/xacro '$(arg model)'" />
+  <param name="geom_description" command="$(find xacro)/xacro --inorder '$(arg world)'" />
+  
+  <node name="world_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-urdf -model world_geometry -param geom_description -x 0 -y 0 -z 0 -Y 0" />
+         <!-- launch-prefix="bash -c 'sleep 2; $0 $@'" -->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+         args=" -x 0 -y -0 -z 0.409 -urdf -model ranger -param robot_description " />
+
+  <rosparam file="$(find nav)/config/ranger/controller.yaml" command="load"/>
+  <rosparam file="$(find nav)/config/ranger/ur_controller.yaml" command="load"/>
+    
+    <node name="arm_pose_keep_alive" pkg="rostopic" type="rostopic" 
+      args="pub -r 1 /arm_pos_controller/command std_msgs/Float64MultiArray '{data: [0.0, -1.5, 2.7, -1.769, 0.0, 0.0]}'" />
+
+    <!-- -J ur5e_shoulder_lift_joint -1.5
+    -J ur5e_elbow_joint 2.7
+    -J ur5e_wrist_1_joint -1.769 -->
+
+  <node name="controller_spawner"
+      pkg="controller_manager"
+      type="spawner"
+      output="screen"
+      args="joint_state_controller
+            four_wheel_steering_controller
+            arm_pos_controller" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"  output="screen"/>
+
+    <!-- <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" /> -->
+
+<!-- arm_pos_controller   -->
+  <!-- <node name="controller_spawner"
+      pkg="controller_manager"
+      type="spawner"
+      output="screen"
+      args="joint_state_controller
+            four_wheel_steering_controller" /> -->
+  <!-- <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher">
+      <rosparam param="zeros">
+          ur5e_shoulder_pan_joint: 0.0
+          ur5e_shoulder_lift_joint: -0.385
+          ur5e_elbow_joint: 1.064
+          ur5e_wrist_1_joint: 0
+          ur5e_wrist_2_joint: 0
+          ur5e_wrist_3_joint: 0.0
+      </rosparam>
+  </node> -->
+
+
+
+  <!-- <node pkg="rqt_robot_steering" type="rqt_robot_steering" name="rqt_robot_steering" >
+      <param name="default_topic" value="/four_wheel_steering_controller/cmd_vel"/>                        
+      <param name="default_vx_max" value="1"/>                        
+      <param name="default_vx_min" value="-1"/>                       
+      <param name="default_vw_max" value="0.5"/>                  
+      <param name="default_vw_min" value="-0.5"/>                  
+  </node> -->
+
+</launch>
