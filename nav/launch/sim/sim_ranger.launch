@@ -6,10 +6,10 @@
     <arg name="gazebo_gui"                  default="true"/>
     <!-- <arg name="world_name"                  default="$(find husky_gazebo)/worlds/clearpath_playpen.world"/> -->
     <!-- <arg name="world_name"                       default="$(find gazebo_ros)/worlds/empty.world"/>  -->
-    <!-- <arg name="world_name"                  default="$(find nav)/world/simple_room.world"/>、 -->
+    <arg name="world_name"                  default="$(find nav)/world/simple_room.world"/>、
     <!-- <arg name="world_name"                  default="$(find nav)/world/room_with_corner.world"/> -->
     <!-- <arg name="world_name"                  default="$(find nav)/world/room.world"/> -->
-    <arg name="world_name" default="$(find cpr_office_gazebo)/worlds/actually_empty_world.world" />
+    <!-- <arg name="world_name" default="$(find cpr_office_gazebo)/worlds/actually_empty_world.world" /> -->
 
     <arg name="odom_frame_id"               default="odom"/> 
     <arg name="lidar_frame_id"              default="velodyne"/>

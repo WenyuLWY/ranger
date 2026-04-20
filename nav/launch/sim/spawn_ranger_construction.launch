@@ -3,10 +3,14 @@
 <launch>
 
   <arg name="model" default="$(find nav)/urdf/ranger_description.xacro"/>
+  <arg name="world" default="$(find cpr_office_gazebo)/urdf/office_construction_geometry.urdf.xacro"/>
 
   <param name="robot_description" command="$(find xacro)/xacro '$(arg model)'" />
+  <param name="geom_description" command="$(find xacro)/xacro --inorder '$(arg world)'" />
   
-
+  <node name="world_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-urdf -model world_geometry -param geom_description -x 0 -y 0 -z 0 -Y 0" />
+         <!-- launch-prefix="bash -c 'sleep 2; $0 $@'" -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
          args=" -x 0 -y -0 -z 0.409 -urdf -model ranger -param robot_description " />
 

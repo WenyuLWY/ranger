@@ -15,7 +15,7 @@
         <mesh filename="package://ranger_description/meshes/base_link.STL"/>
       </geometry>
       <material name="">
-        <color rgba="1 1 1 1"/>
+        <color rgba="0.6 0.6 0.6 1"/>
       </material>
     </visual>
     <collision>
@@ -26,7 +26,12 @@
       </geometry>
     </collision>
   </link>
-<link name="fr_steering_wheel_link">
+
+  <gazebo reference="base_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <link name="fr_steering_wheel_link">
     <inertial>
       <origin xyz="0.0001118 -0.0073218 -0.085228" rpy="0 0 0"/>
       <mass value="2.0957"/>
@@ -38,7 +43,7 @@
         <mesh filename="package://ranger_description/meshes/fr_steering_wheel_link.STL"/>
       </geometry>
       <material name="">
-        <color rgba="0 0 0 1"/>
+        <color rgba="0.3 0.3 0.3 1"/>
       </material>
     </visual>
     <collision>
@@ -49,7 +54,9 @@
     </collision>
   </link>
 
-
+  <gazebo reference="fr_steering_wheel_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
 
   <link name="fr_wheel_link">
     <inertial>
@@ -63,7 +70,7 @@
         <mesh filename="package://ranger_description/meshes/fr_wheel_link.STL"/>
       </geometry>
       <material name="">
-        <color rgba="1 1 1 1"/>
+        <color rgba="0.1 0.1 0.1 1"/>
       </material>
     </visual>
     <collision>
@@ -75,6 +82,9 @@
     </collision>
   </link>
 
+  <gazebo reference="fr_wheel_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
 
   <link name="fl_steering_wheel_link">
     <inertial>
@@ -88,7 +98,7 @@
         <mesh filename="package://ranger_description/meshes/fl_steering_wheel_link.STL"/>
       </geometry>
       <material name="">
-        <color rgba="0 0 0 1"/>
+        <color rgba="0.3 0.3 0.3 1"/>
       </material>
     </visual>
     <collision>
@@ -99,7 +109,9 @@
     </collision>
   </link>
 
-
+  <gazebo reference="fl_steering_wheel_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
 
   <link name="fl_wheel_link">
     <inertial>
@@ -113,7 +125,7 @@
         <mesh filename="package://ranger_description/meshes/fl_wheel_link.STL"/>
       </geometry>
       <material name="">
-        <color rgba="1 1 1 1"/>
+        <color rgba="0.1 0.1 0.1 1"/>
       </material>
     </visual>
     <collision>
@@ -125,7 +137,9 @@
     </collision>
   </link>
 
-
+  <gazebo reference="fl_wheel_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
 
   <link name="rl_steering_wheel_link">
     <inertial>
@@ -139,7 +153,7 @@
         <mesh filename="package://ranger_description/meshes/rl_steering_wheel_link.STL"/>
       </geometry>
       <material name="">
-        <color rgba="0 0 0 1"/>
+        <color rgba="0.3 0.3 0.3 1"/>
       </material>
     </visual>
     <collision>
@@ -150,7 +164,9 @@
     </collision>
   </link>
 
-
+  <gazebo reference="rl_steering_wheel_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
 
   <link name="rl_wheel_link">
     <inertial>
@@ -164,7 +180,7 @@
         <mesh filename="package://ranger_description/meshes/rl_wheel_link.STL"/>
       </geometry>
       <material name="">
-        <color rgba="1 1 1 1"/>
+        <color rgba="0.1 0.1 0.1 1"/>
       </material>
     </visual>
     <collision>
@@ -176,7 +192,9 @@
     </collision>
   </link>
 
-
+  <gazebo reference="rl_wheel_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
 
   <link name="rr_steering_wheel_link">
     <inertial>
@@ -190,7 +208,7 @@
         <mesh filename="package://ranger_description/meshes/rr_steering_wheel_link.STL"/>
       </geometry>
       <material name="">
-        <color rgba="0 0 0 1"/>
+        <color rgba="0.3 0.3 0.3 1"/>
       </material>
     </visual>
     <collision>
@@ -200,6 +218,10 @@
       </geometry>
     </collision>
   </link>
+
+  <gazebo reference="rr_steering_wheel_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
 
   <link name="rr_wheel_link">
     <inertial>
@@ -213,7 +235,7 @@
         <mesh filename="package://ranger_description/meshes/rr_wheel_link.STL"/>
       </geometry>
       <material name="">
-        <color rgba="1 1 1 1"/>
+        <color rgba="0.1 0.1 0.1 1"/>
       </material>
     </visual>
     <collision>
@@ -225,6 +247,9 @@
     </collision>
   </link>
 
+  <gazebo reference="rr_wheel_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
 
 
   <joint name="fl_steering_wheel_joint" type="revolute">
