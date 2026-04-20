@@ -1,20 +1,8 @@
 FROM nvidia/opengl:1.0-glvnd-devel-ubuntu20.04
 
 ARG DEBIAN_FRONTEND=noninteractive
+
 #base
-# RUN apt update && apt upgrade -y
-
-# RUN apt-get update && apt-get install -y ca-certificates
-# RUN rm -f /etc/apt/sources.list.d/* \
-#  && printf 'deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted universe multiverse\n\
-# deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-updates main restricted universe multiverse\n\
-# deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-backports main restricted universe multiverse\n\
-# deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-security main restricted universe multiverse\n' \
-#  > /etc/apt/sources.list \
-#  && apt-get update \
-#  && apt-get install -y ca-certificates \
-#  && rm -rf /var/lib/apt/lists/*
-
 RUN apt-get update && apt-get install -y lsb-release curl wget ca-certificates git gnupg gdb
 
 #ros-noetic-desktop-full
@@ -25,9 +13,8 @@ RUN apt-get update && apt-get install -y python3-pip python3-rosdep python3-rosi
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc   
 RUN echo "export DISABLE_ROS1_EOL_WARNINGS=1" >> ~/.bashrc  
  
-
-
-
+ 
+#cartographer
 WORKDIR /root
 RUN apt-get update && apt-get install -y libceres-dev libgmock-dev lua5.2 liblua5.2-dev ninja-build stow
 RUN git clone https://github.com/abseil/abseil-cpp.git && cd abseil-cpp && \
@@ -36,45 +23,27 @@ RUN git clone https://github.com/abseil/abseil-cpp.git && cd abseil-cpp && \
     cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=/usr/local/stow/absl .. && \
     ninja && ninja install && cd /usr/local/stow && stow absl  && rm -rf /root/abseil-cpp
 
+#ranger
 RUN apt-get update && apt-get install -y libasio-dev
-
 RUN mkdir -p dependencies_catkin_ws/src
 RUN git clone https://github.com/agilexrobotics/ranger_ros.git dependencies_catkin_ws/src/ranger_ros
 RUN git clone https://github.com/agilexrobotics/ugv_sdk.git dependencies_catkin_ws/src/ugv_sdk
 
-
-
-
-
-#base
-# RUN apt-get update && apt-get install -y ros-noetic-hector-trajectory-server  ros-noetic-tf2-sensor-msgs 
-
 # ros workspace
-
-
-
-
-
-
-
-
-# #DSV planner
-# RUN apt-get update && apt-get install -y ros-noetic-octomap-ros libgoogle-glog-dev libgflags-dev
-
-# RUN apt-get update && apt-get install -y ros-noetic-explore-lite
-
-
 RUN cd dependencies_catkin_ws && \
     bash -c "source /opt/ros/noetic/setup.bash && catkin_make" && \
     echo "source ~/dependencies_catkin_ws/devel/setup.bash" >> ~/.bashrc
 
-   
+#navigation 2d   
 RUN apt-get update && apt-get install -y ros-noetic-navigation ros-noetic-teb-local-planner \
                                             ros-noetic-sick-scan-xd \
-                                            ros-noetic-point-cloud2-filters ros-noetic-pointcloud-to-laserscan
+                                            ros-noetic-point-cloud2-filters ros-noetic-sensor-filters                                   
 
 #autonomous_exploration_development_environment
 RUN apt-get update && apt-get install -y libusb-dev
+
+#speed control
+RUN apt-get update && apt-get install -y ros-noetic-interactive-marker-twist-server ros-noetic-twist-mux 
 
 #rtabmap
 RUN apt-get update && apt-get install -y ros-noetic-rtabmap-ros ros-noetic-libpointmatcher ros-noetic-libg2o ros-noetic-gtsam
@@ -82,15 +51,15 @@ RUN apt-get update && apt-get install -y ros-noetic-rtabmap-ros ros-noetic-libpo
 #DLO
 RUN apt-get update && apt-get install -y libomp-dev libpcl-dev libeigen3-dev 
 
-#speed
-RUN apt-get update && apt-get install -y ros-noetic-interactive-marker-twist-server ros-noetic-twist-mux 
 
-#husky
+#test:husky
 RUN apt-get update && apt-get install -y ros-noetic-husky-simulator
 
-RUN apt-get update && apt-get install -y ros-noetic-ur-description
+#develop
+RUN apt-get update && apt-get install -y ros-noetic-hector-trajectory-server  ros-noetic-tf2-sensor-msgs ros-noetic-pointcloud-to-laserscan
 
-RUN apt-get update && apt-get install -y ros-noetic-sensor-filters
+#ur
+RUN apt-get update && apt-get install -y ros-noetic-ur-description
 
 RUN mkdir -p catkin_ws/src && \
     cd catkin_ws && \
