@@ -6,10 +6,10 @@
     <arg name="gazebo_gui"                  default="true"/>
     <!-- <arg name="world_name"                  default="$(find husky_gazebo)/worlds/clearpath_playpen.world"/> -->
     <!-- <arg name="world_name"                       default="$(find gazebo_ros)/worlds/empty.world"/>  -->
-    <arg name="world_name"                  default="$(find nav)/world/simple_room.world"/>、
+    <!-- <arg name="world_name"                  default="$(find nav)/world/simple_room.world"/>、 -->
     <!-- <arg name="world_name"                  default="$(find nav)/world/room_with_corner.world"/> -->
+    <arg name="world_name"                       default="worlds/willowgarage.world"/>
     <!-- <arg name="world_name"                  default="$(find nav)/world/room.world"/> -->
-    <!-- <arg name="world_name" default="$(find cpr_office_gazebo)/worlds/actually_empty_world.world" /> -->
 
     <arg name="odom_frame_id"               default="odom"/> 
     <arg name="lidar_frame_id"              default="velodyne"/>
@@ -34,10 +34,11 @@
     <arg name="raw_cloud_topic" value="$(arg raw_cloud_topic)"/>
   </include>
 
-  <node pkg="nodelet" type="nodelet" name="LocalizationSimNodelet" args="load msp/LocalizationSimNodelet nodelet_manager" output="screen">
-    <param name="laserCloudTopic" value="$(arg raw_cloud_topic)"/>
-    <param name="robotName" value="ranger"/>
-  </node>
+
+
+  <include file="$(find nav)/launch/sim/mapping_velodyne_cartographer.launch">
+    <arg name="odometry_topic" default="/four_wheel_steering_controller/odom"/>
+  </include>
 
 
   <node pkg="nodelet" type="nodelet" name="SensorInputNodelet" args="load msp/SensorInputNodelet nodelet_manager" output="screen">
@@ -50,7 +51,12 @@
     <param name="source_frame_id"         value="$(arg source_frame_id)"/>
   </node>
 
-  <include file="$(find nav)/launch/mapping_rtabmap.launch">
+  <!-- <node pkg="nodelet" type="nodelet" name="LocalizationSimNodelet" args="load msp/LocalizationSimNodelet nodelet_manager" output="screen">
+    <param name="laserCloudTopic" value="$(arg raw_cloud_topic)"/>
+    <param name="robotName" value="ranger"/>
+  </node> -->
+
+  <!-- <include file="$(find nav)/launch/mapping_rtabmap.launch">
     <arg name="scan_topic"             value="$(arg raw_cloud_topic)"/>
     <arg name="odometry_topic"         value="/odom"/>
     <arg name="odom_frame_id"          value="$(arg odom_frame_id)"/>
@@ -60,18 +66,18 @@
     <arg name="imu_topic"             default="/imu/data"/>
     <arg name="use_sim_time"          default="true"/>
     <arg name="ground_is_obstacle"    default="false"/>
+  </include> -->
+
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch" >
+      <arg name="paused"            default="false"/>
+      <arg name="use_sim_time"      default="true"/>
+      <arg name="gui"               value="$(arg gazebo_gui)"/>
+      <arg name="headless"          default="false"/>
+      <arg name="debug"             default="false"/>
+      <arg name="verbose"           default="false"/>
+      <arg name="world_name"        default="$(arg world_name)"/>
   </include>
-
-
-    <include file="$(find gazebo_ros)/launch/empty_world.launch" >
-        <arg name="paused"            default="false"/>
-        <arg name="use_sim_time"      default="true"/>
-        <arg name="gui"               value="$(arg gazebo_gui)"/>
-        <arg name="headless"          default="false"/>
-        <arg name="debug"             default="false"/>
-        <arg name="verbose"           default="false"/>
-        <arg name="world_name"        default="$(arg world_name)"/>
-    </include>
 
    <node pkg="rviz" type="rviz" name="rviz_run" args="-d $(find nav)/rviz/ranger.rviz" /> 
 

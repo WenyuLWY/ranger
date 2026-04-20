@@ -46,6 +46,7 @@ docker run -it --name $CONTAINER_NAME \
     -v $XAUTH:/root/.docker.$CONTAINER_NAME.xauth \
     -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
     -v /etc/localtime:/etc/localtime:ro \
+    -v ~/.gazebo/models:/root/.gazebo/models \
     $MOUNT_ARGS \
     $IMAGE_NAME bash
 

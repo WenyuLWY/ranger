@@ -66,6 +66,8 @@ RUN mkdir -p catkin_ws/src && \
     bash -c "source /opt/ros/noetic/setup.bash && catkin build" && \
     echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc   
 
+RUN echo "source /usr/share/gazebo/setup.sh" >> ~/.bashrc
+
 RUN echo "#!/bin/bash" > /root/start.sh && \
     echo "cd /root/catkin_ws" >> /root/start.sh && \
     echo "source /opt/ros/noetic/setup.bash" >> /root/start.sh && \

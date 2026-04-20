@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!-- -->
+<launch>
+
+    <arg name="configuration_basename" default="velodyne.lua"/>
+    <arg name="load_state_filename" default="$(find nav)/map/test.pbstream"/>
+    <arg name="odometry_topic" default="/odom"/>
+
+
+    <node name="cartographer_node" pkg="cartographer_ros" type="cartographer_node" args="
+          -configuration_directory $(find nav)/config/cartographer
+          -configuration_basename $(arg configuration_basename)" output="log" required="true">
+        <remap from="odom" to="$(arg odometry_topic)"/>
+        <remap from="points2" to="/velodyne_points/filtered" />
+        <remap from="imu" to="/imu/data"/>
+    </node>
+
+    <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros" type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
+
+</launch>
